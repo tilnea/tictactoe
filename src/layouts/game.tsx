@@ -4,18 +4,34 @@ import { Background } from "../components/background";
 import { Board } from "../components/board";
 import { Button } from "../components/button";
 import { Icon } from "../components/icon";
+import { Scoreboard } from "../components/scoreboard";
 import { Player, GameStatus } from "../shared/variables";
 import { PlayerType, WinnerType } from "../shared/types";
 import { checkForVictory } from "../shared/utils";
 
-const Layout = styled.div`
+const Content = styled.div`
   height: 100%;
+  max-height: 915px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const GameLayout = styled.div`
+  flex: 1 1 0;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 40px;
+`;
+
+const ScoreboardLayout = styled.div`
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
 `;
 
 export const Game = () => {
@@ -29,6 +45,7 @@ export const Game = () => {
   const [board, setBoard] = useState<PlayerType[][]>(EMPTY_STATE);
   const [player, setPlayer] = useState<PlayerType>(Player.NO);
   const [winningInfo, setWinningInfo] = useState<WinnerType>(undefined);
+  const [score, setScore] = useState({ x: 0, o: 0 });
 
   const handleStartGame = () => {
     if (gameStatus === GameStatus.START) {
@@ -45,12 +62,11 @@ export const Game = () => {
   };
 
   const handleCellClick = (row: number, column: number) => {
-    if (gameStatus === GameStatus.FINISH) return;
     if (player === Player.NO) {
       handleStartGame();
       return;
     }
-
+    if (gameStatus === GameStatus.FINISH) return;
     if (board[row][column] !== Player.NO) return;
 
     const newboard = [...board];
@@ -61,6 +77,10 @@ export const Game = () => {
     if (victoryInfo) {
       setWinningInfo(victoryInfo);
       setGameStatus(GameStatus.FINISH);
+
+      player === Player.X
+        ? setScore({ ...score, x: score.x + 1 })
+        : setScore({ ...score, o: score.o + 1 });
     } else {
       setPlayer(player === Player.X ? Player.O : Player.X);
     }
@@ -68,23 +88,28 @@ export const Game = () => {
 
   return (
     <Background $player={player}>
-      <Layout>
-        <div>
-          {player !== Player.O && <Icon id={Player.X} size={86} />}
-          {player !== Player.X && <Icon id={Player.O} size={86} />}
-        </div>
+      <Content>
+        <GameLayout>
+          <div>
+            {player !== Player.O && <Icon id={Player.X} size={86} />}
+            {player !== Player.X && <Icon id={Player.O} size={86} />}
+          </div>
 
-        <Board
-          winningInfo={winningInfo}
-          board={board}
-          onCellClick={handleCellClick}
-        />
-        <Button onClick={handleStartGame}>
-          {gameStatus === GameStatus.START && "Play"}
-          {gameStatus === GameStatus.PLAY && "Reset game"}
-          {gameStatus === GameStatus.FINISH && "Play again"}
-        </Button>
-      </Layout>
+          <Board
+            winningInfo={winningInfo}
+            board={board}
+            onCellClick={handleCellClick}
+          />
+          <Button onClick={handleStartGame}>
+            {gameStatus === GameStatus.START && "Play"}
+            {gameStatus === GameStatus.PLAY && "Reset game"}
+            {gameStatus === GameStatus.FINISH && "Play again"}
+          </Button>
+        </GameLayout>
+        <ScoreboardLayout>
+          <Scoreboard score={score} />
+        </ScoreboardLayout>
+      </Content>
     </Background>
   );
 };

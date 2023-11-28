@@ -12,7 +12,6 @@ const SVG = styled.svg`
   height: 1em;
   display: inline-flex;
   align-items: center;
-  margin: 0 4px;
   flex: 0 0 auto;
   color: inherit;
 `;
