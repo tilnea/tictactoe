@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { Background } from "../components/background";
 import { Board } from "../components/board";
 import { Button } from "../components/button";
-import { Icon } from "../components/icon";
+import { CurrentPlayer } from "../components/current-player";
 import { Scoreboard } from "../components/scoreboard";
 import { Player, GameStatus } from "../shared/variables";
 import { PlayerType, WinnerType } from "../shared/types";
@@ -98,13 +98,24 @@ export const Game = () => {
   };
 
   return (
-    <Background $player={player}>
+    <Background
+      showOnlyX={
+        player === Player.X &&
+        (gameStatus === GameStatus.PLAY ||
+          (gameStatus === GameStatus.FINISH && winningInfo !== undefined))
+      }
+      showOnlyO={
+        player === Player.O &&
+        (gameStatus === GameStatus.PLAY ||
+          (gameStatus === GameStatus.FINISH && winningInfo !== undefined))
+      }
+    >
       <Content>
         <GameLayout>
-          <div>
-            {player !== Player.O && <Icon id={Player.X} size={86} />}
-            {player !== Player.X && <Icon id={Player.O} size={86} />}
-          </div>
+          <CurrentPlayer
+            showX={player === Player.X && gameStatus === GameStatus.PLAY}
+            showO={player === Player.O && gameStatus === GameStatus.PLAY}
+          />
 
           <Board
             winningInfo={winningInfo}
