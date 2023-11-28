@@ -1,24 +1,24 @@
-import { PlayerType } from "./types";
+import { PlayerType, DirectionType } from "./types";
 import { Player, Direction } from "./variables";
 
-const getColumn = (matrix: PlayerType[][], column: number) => {
+export const getColumn = (matrix: PlayerType[][], column: number) => {
   return matrix.map((row) => row[column]);
 };
 
-const getDiagonal = (matrix: PlayerType[][]) => {
+export const getDiagonal = (matrix: PlayerType[][]) => {
   return matrix.map((row, i) => row[i]);
 };
 
-const getAntiDiagonal = (matrix: PlayerType[][]) => {
+export const getAntiDiagonal = (matrix: PlayerType[][]) => {
   return matrix.map((row, i) => row[2 - i]);
 };
 
-const isDiagonalCell = (row: number, column: number) => {
+export const isDiagonalCell = (row: number, column: number) => {
   const sum = row + column;
   return sum % 2 == 0;
 };
 
-const isSame = (array: PlayerType[], player: PlayerType) => {
+export const isSame = (array: PlayerType[], player: PlayerType) => {
   return array.filter((cell) => cell === player).length === 3;
 };
 
@@ -54,4 +54,22 @@ export const checkForVictory = (
   }
 
   return undefined;
+};
+
+export const isWinningCell = (
+  winDirection: DirectionType,
+  winStart: number,
+  row: number,
+  column: number
+) => {
+  switch (winDirection) {
+    case Direction.ROW:
+      return row === winStart;
+    case Direction.COLUMN:
+      return column === winStart;
+    case Direction.DIAGONAL:
+      return row === column;
+    case Direction.ANTI_DIAGONAL:
+      return row + column === winStart;
+  }
 };

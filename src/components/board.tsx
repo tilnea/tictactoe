@@ -1,8 +1,9 @@
 import { styled } from "styled-components";
 import { Cell } from "./cell";
 import { Icon } from "./icon";
-import { Player, Direction } from "../shared/variables";
-import { PlayerType, WinnerType, DirectionType } from "../shared/types";
+import { isWinningCell } from "../shared/utils";
+import { Player } from "../shared/variables";
+import { PlayerType, WinnerType } from "../shared/types";
 
 interface BoardProps {
   gameState: PlayerType[][];
@@ -16,24 +17,6 @@ const Wrapper = styled.div`
   grid-template-rows: repeat(3, 86px);
   gap: 10px;
 `;
-
-const isWinningCell = (
-  winDirection: DirectionType,
-  winStart: number,
-  row: number,
-  column: number
-) => {
-  switch (winDirection) {
-    case Direction.ROW:
-      return row === winStart;
-    case Direction.COLUMN:
-      return column === winStart;
-    case Direction.DIAGONAL:
-      return row === column;
-    case Direction.ANTI_DIAGONAL:
-      return row + column === winStart;
-  }
-};
 
 export const Board = ({ gameState, winnerArray, onCellClick }: BoardProps) => {
   return (
