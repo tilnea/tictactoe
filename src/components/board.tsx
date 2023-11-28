@@ -5,10 +5,12 @@ import { Win } from "./win";
 import { isWinningCell } from "../shared/utils";
 import { Player } from "../shared/variables";
 import { PlayerType, WinnerType } from "../shared/types";
+import { Tie } from "./tie";
 
 interface BoardProps {
   board: PlayerType[][];
   winningInfo: WinnerType;
+  itsATie: boolean;
   onCellClick: (row: number, column: number) => void;
 }
 
@@ -17,9 +19,20 @@ const Wrapper = styled.div`
   grid-template-columns: repeat(3, 86px);
   grid-template-rows: repeat(3, 86px);
   gap: 10px;
+
+  position: relative;
 `;
 
-export const Board = ({ board, winningInfo, onCellClick }: BoardProps) => {
+const TieWrapper = styled.div`
+  position: absolute;
+`;
+
+export const Board = ({
+  board,
+  winningInfo,
+  itsATie,
+  onCellClick,
+}: BoardProps) => {
   let winCellNumber = 0;
   return (
     <Wrapper>
@@ -52,6 +65,11 @@ export const Board = ({ board, winningInfo, onCellClick }: BoardProps) => {
           );
         });
       })}
+      {itsATie && (
+        <TieWrapper>
+          <Tie />
+        </TieWrapper>
+      )}
     </Wrapper>
   );
 };

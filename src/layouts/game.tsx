@@ -45,15 +45,18 @@ export const Game = () => {
   const [board, setBoard] = useState<PlayerType[][]>(EMPTY_STATE);
   const [player, setPlayer] = useState<PlayerType>(Player.NO);
   const [winningInfo, setWinningInfo] = useState<WinnerType>(undefined);
-  const [score, setScore] = useState({ x: 0, o: 0 });
+  const [score, setScore] = useState({ x: 0, o: 0, tie: 0 });
+  const [turn, setTurn] = useState(1);
 
   const handleStartGame = () => {
     if (gameStatus === GameStatus.START) {
       setPlayer(Player.X);
     } else if (gameStatus === GameStatus.PLAY) {
       setBoard(EMPTY_STATE);
+      setTurn(1);
     } else if (gameStatus === GameStatus.FINISH) {
       setBoard(EMPTY_STATE);
+      setTurn(1);
       setWinningInfo(undefined);
       setPlayer(player === Player.X ? Player.O : Player.X);
     }
@@ -69,6 +72,8 @@ export const Game = () => {
     if (gameStatus === GameStatus.FINISH) return;
     if (board[row][column] !== Player.NO) return;
 
+    setTurn(turn + 1);
+
     const newboard = [...board];
     newboard[row][column] = player === Player.X ? Player.X : Player.O;
     setBoard(newboard);
@@ -82,7 +87,13 @@ export const Game = () => {
         ? setScore({ ...score, x: score.x + 1 })
         : setScore({ ...score, o: score.o + 1 });
     } else {
-      setPlayer(player === Player.X ? Player.O : Player.X);
+      if (turn === 9) {
+        // It's a tie
+        setGameStatus(GameStatus.FINISH);
+        setScore({ ...score, tie: score.tie + 1 });
+      } else {
+        setPlayer(player === Player.X ? Player.O : Player.X);
+      }
     }
   };
 
@@ -99,6 +110,7 @@ export const Game = () => {
             winningInfo={winningInfo}
             board={board}
             onCellClick={handleCellClick}
+            itsATie={!winningInfo && gameStatus === GameStatus.FINISH}
           />
           <Button onClick={handleStartGame}>
             {gameStatus === GameStatus.START && "Play"}
