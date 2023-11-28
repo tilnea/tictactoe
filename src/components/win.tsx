@@ -39,8 +39,12 @@ const handleRainbowDirection = (direction: DirectionType) => {
       return 0;
     case Direction.COLUMN:
       return 90;
-    default:
+    case Direction.DIAGONAL:
       return 45;
+    case Direction.ANTI_DIAGONAL:
+      return -45;
+    default:
+      return 0;
   }
 };
 
