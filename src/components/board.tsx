@@ -5,8 +5,8 @@ import { Player } from "../shared/variables";
 import { PlayerType } from "../shared/types";
 
 interface BoardProps {
-  gameState: PlayerType[];
-  onCellClick: (index: number) => void;
+  gameState: PlayerType[][];
+  onCellClick: (row: number, column: number) => void;
 }
 
 const Wrapper = styled.div`
@@ -19,22 +19,24 @@ const Wrapper = styled.div`
 export const Board = ({ gameState, onCellClick }: BoardProps) => {
   return (
     <Wrapper>
-      {gameState.map((cell, index) => {
-        let content = <div />;
+      {gameState.map((row, i) => {
+        return row.map((cell, j) => {
+          let content = <div />;
 
-        if (cell !== Player.NO) {
-          content = <Icon id={cell} size={60} />;
-        }
+          if (cell !== Player.NO) {
+            content = <Icon id={cell} size={60} />;
+          }
 
-        return (
-          <Cell
-            onClick={() => onCellClick(index)}
-            key={index}
-            $clicked={cell !== Player.NO}
-          >
-            {content}
-          </Cell>
-        );
+          return (
+            <Cell
+              onClick={() => onCellClick(i, j)}
+              key={`cell-${i}-${j}`}
+              $clicked={cell !== Player.NO}
+            >
+              {content}
+            </Cell>
+          );
+        });
       })}
     </Wrapper>
   );

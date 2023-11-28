@@ -18,27 +18,31 @@ const Layout = styled.div`
 `;
 
 export const Game = () => {
-  const [gameState, setGameState] = useState<PlayerType[]>(
-    Array(9).fill(Player.NO)
-  );
+  const EMPTY_STATE = [
+    Array(3).fill(Player.NO),
+    Array(3).fill(Player.NO),
+    Array(3).fill(Player.NO),
+  ];
+  const [gameState, setGameState] = useState<PlayerType[][]>(EMPTY_STATE);
+
   const [player, setPlayer] = useState<PlayerType>(Player.NO);
 
   const handleStartGame = () => {
     if (player === Player.NO) {
       setPlayer(Player.X);
     } else {
-      setGameState(Array(9).fill(Player.NO));
+      console.log("here?");
+      setGameState(EMPTY_STATE);
       setPlayer(Player.NO);
     }
   };
 
-  const handleCellClick = (cellIndex: number) => {
+  const handleCellClick = (row: number, column: number) => {
     if (player === Player.NO) return;
-    if (gameState[cellIndex] !== Player.NO) return;
+    if (gameState[row][column] !== Player.NO) return;
 
     const newGameState = [...gameState];
-
-    newGameState[cellIndex] = player === Player.X ? Player.X : Player.O;
+    newGameState[row][column] = player === Player.X ? Player.X : Player.O;
     setGameState(newGameState);
     setPlayer(player === Player.X ? Player.O : Player.X);
   };
@@ -46,14 +50,11 @@ export const Game = () => {
   return (
     <Background $player={player}>
       <Layout>
-        {player === Player.NO ? (
-          <div>
-            <Icon id={Player.X} size={86} />
-            <Icon id={Player.O} size={86} />
-          </div>
-        ) : (
-          <Icon id={player} size={86} />
-        )}
+        <div>
+          {player !== Player.O && <Icon id={Player.X} size={86} />}
+          {player !== Player.X && <Icon id={Player.O} size={86} />}
+        </div>
+
         <Board gameState={gameState} onCellClick={handleCellClick} />
         <Button onClick={handleStartGame}>
           {player === Player.NO ? "Play" : "Reset"}
