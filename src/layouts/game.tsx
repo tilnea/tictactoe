@@ -5,7 +5,7 @@ import { Board } from "../components/board";
 import { Button } from "../components/button";
 import { Icon } from "../components/icon";
 import { Player } from "../shared/variables";
-import { PlayerType } from "../shared/types";
+import { PlayerType, WinnerType } from "../shared/types";
 import { checkForVictory } from "../shared/utils";
 
 const Layout = styled.div`
@@ -28,11 +28,14 @@ export const Game = () => {
 
   const [player, setPlayer] = useState<PlayerType>(Player.NO);
 
+  const [winnerArray, setWinnerState] = useState<WinnerType>(undefined);
+
   const handleStartGame = () => {
     if (player === Player.NO) {
       setPlayer(Player.X);
     } else {
       setGameState(EMPTY_STATE);
+      setWinnerState(undefined);
       setPlayer(Player.NO);
     }
   };
@@ -40,7 +43,9 @@ export const Game = () => {
   const handleCellClick = (row: number, column: number) => {
     if (player === Player.NO) {
       handleStartGame();
+      return;
     }
+
     if (gameState[row][column] !== Player.NO) return;
 
     const newGameState = [...gameState];
@@ -48,7 +53,7 @@ export const Game = () => {
     setGameState(newGameState);
 
     if (checkForVictory(row, column, gameState, player)) {
-      console.log("player", player, "wins");
+      setWinnerState(checkForVictory(row, column, gameState, player));
     } else {
       setPlayer(player === Player.X ? Player.O : Player.X);
     }
@@ -62,7 +67,11 @@ export const Game = () => {
           {player !== Player.X && <Icon id={Player.O} size={86} />}
         </div>
 
-        <Board gameState={gameState} onCellClick={handleCellClick} />
+        <Board
+          winnerArray={winnerArray}
+          gameState={gameState}
+          onCellClick={handleCellClick}
+        />
         <Button onClick={handleStartGame}>
           {player === Player.NO ? "Play" : "Reset"}
         </Button>

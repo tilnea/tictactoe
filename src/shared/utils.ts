@@ -1,4 +1,5 @@
 import { PlayerType } from "./types";
+import { Player, Direction } from "./variables";
 
 const getColumn = (matrix: PlayerType[][], column: number) => {
   return matrix.map((row) => row[column]);
@@ -28,22 +29,29 @@ export const checkForVictory = (
   player: PlayerType
 ) => {
   //check row
-  if (isSame(gameStatus[currentRow], player)) return true;
+  if (player === Player.NO) return undefined;
+  if (isSame(gameStatus[currentRow], player))
+    //return { row: currentRow, column: 0 };
+    return { direction: Direction.ROW, where: currentRow };
 
   //check column
   const columnArray = getColumn(gameStatus, currentColumn);
-  if (isSame(columnArray, player)) return true;
+  if (isSame(columnArray, player))
+    //return { row: 0, column: currentColumn };
+    return { direction: Direction.COLUMN, where: currentColumn };
 
   //check diagonal
   if (isDiagonalCell(currentRow, currentColumn)) {
     if (currentColumn === currentRow) {
       const diagonalArray = getDiagonal(gameStatus);
-      if (isSame(diagonalArray, player)) return true;
+      if (isSame(diagonalArray, player))
+        return { direction: Direction.DIAGONAL, where: 0 };
     }
 
     const antiDiagonal = getAntiDiagonal(gameStatus);
-    return isSame(antiDiagonal, player);
+    if (isSame(antiDiagonal, player))
+      return { direction: Direction.ANTI_DIAGONAL, where: 2 };
   }
 
-  return false;
+  return undefined;
 };
