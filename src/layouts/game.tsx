@@ -4,7 +4,7 @@ import { Background } from "../components/background";
 import { Board } from "../components/board";
 import { Button } from "../components/button";
 import { Icon } from "../components/icon";
-import { Player } from "../shared/variables";
+import { Player, GameStatus } from "../shared/variables";
 import { PlayerType, WinnerType } from "../shared/types";
 import { checkForVictory } from "../shared/utils";
 
@@ -24,22 +24,28 @@ export const Game = () => {
     Array(3).fill(Player.NO),
     Array(3).fill(Player.NO),
   ];
+
+  const [gameStatus, setGameStatus] = useState(GameStatus.START);
   const [board, setBoard] = useState<PlayerType[][]>(EMPTY_STATE);
   const [player, setPlayer] = useState<PlayerType>(Player.NO);
   const [winningInfo, setWinningInfo] = useState<WinnerType>(undefined);
 
   const handleStartGame = () => {
-    if (player === Player.NO) {
+    if (gameStatus === GameStatus.START) {
       setPlayer(Player.X);
-    } else {
+    } else if (gameStatus === GameStatus.PLAY) {
+      setBoard(EMPTY_STATE);
+    } else if (gameStatus === GameStatus.FINISH) {
       setBoard(EMPTY_STATE);
       setWinningInfo(undefined);
-      setPlayer(Player.NO);
+      setPlayer(player === Player.X ? Player.O : Player.X);
     }
+
+    setGameStatus(GameStatus.PLAY);
   };
 
   const handleCellClick = (row: number, column: number) => {
-    if (winningInfo !== undefined) return;
+    if (gameStatus === GameStatus.FINISH) return;
     if (player === Player.NO) {
       handleStartGame();
       return;
@@ -51,8 +57,10 @@ export const Game = () => {
     newboard[row][column] = player === Player.X ? Player.X : Player.O;
     setBoard(newboard);
 
-    if (checkForVictory(row, column, board, player)) {
-      setWinningInfo(checkForVictory(row, column, board, player));
+    const victoryInfo = checkForVictory(row, column, board, player);
+    if (victoryInfo) {
+      setWinningInfo(victoryInfo);
+      setGameStatus(GameStatus.FINISH);
     } else {
       setPlayer(player === Player.X ? Player.O : Player.X);
     }
@@ -72,11 +80,9 @@ export const Game = () => {
           onCellClick={handleCellClick}
         />
         <Button onClick={handleStartGame}>
-          {player === Player.NO
-            ? "Play"
-            : winningInfo === undefined
-            ? "Reset"
-            : "Play again"}
+          {gameStatus === GameStatus.START && "Play"}
+          {gameStatus === GameStatus.PLAY && "Reset game"}
+          {gameStatus === GameStatus.FINISH && "Play again"}
         </Button>
       </Layout>
     </Background>

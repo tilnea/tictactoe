@@ -10,3 +10,9 @@ export enum Direction {
   DIAGONAL = "diagonal",
   ANTI_DIAGONAL = "anti-diagonal",
 }
+
+export enum GameStatus {
+  START = "start",
+  PLAY = "play",
+  FINISH = "finish",
+}
