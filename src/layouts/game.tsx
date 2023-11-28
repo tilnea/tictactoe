@@ -38,7 +38,9 @@ export const Game = () => {
   };
 
   const handleCellClick = (row: number, column: number) => {
-    if (player === Player.NO) return;
+    if (player === Player.NO) {
+      handleStartGame();
+    }
     if (gameState[row][column] !== Player.NO) return;
 
     const newGameState = [...gameState];
