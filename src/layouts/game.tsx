@@ -6,6 +6,7 @@ import { Button } from "../components/button";
 import { Icon } from "../components/icon";
 import { Player } from "../shared/variables";
 import { PlayerType } from "../shared/types";
+import { checkForVictory } from "../shared/utils";
 
 const Layout = styled.div`
   height: 100%;
@@ -31,7 +32,6 @@ export const Game = () => {
     if (player === Player.NO) {
       setPlayer(Player.X);
     } else {
-      console.log("here?");
       setGameState(EMPTY_STATE);
       setPlayer(Player.NO);
     }
@@ -44,7 +44,12 @@ export const Game = () => {
     const newGameState = [...gameState];
     newGameState[row][column] = player === Player.X ? Player.X : Player.O;
     setGameState(newGameState);
-    setPlayer(player === Player.X ? Player.O : Player.X);
+
+    if (checkForVictory(row, column, gameState, player)) {
+      console.log("player", player, "wins");
+    } else {
+      setPlayer(player === Player.X ? Player.O : Player.X);
+    }
   };
 
   return (
