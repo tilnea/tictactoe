@@ -24,36 +24,35 @@ export const Game = () => {
     Array(3).fill(Player.NO),
     Array(3).fill(Player.NO),
   ];
-  const [gameState, setGameState] = useState<PlayerType[][]>(EMPTY_STATE);
-
+  const [board, setBoard] = useState<PlayerType[][]>(EMPTY_STATE);
   const [player, setPlayer] = useState<PlayerType>(Player.NO);
-
-  const [winnerArray, setWinnerState] = useState<WinnerType>(undefined);
+  const [winningInfo, setWinningInfo] = useState<WinnerType>(undefined);
 
   const handleStartGame = () => {
     if (player === Player.NO) {
       setPlayer(Player.X);
     } else {
-      setGameState(EMPTY_STATE);
-      setWinnerState(undefined);
+      setBoard(EMPTY_STATE);
+      setWinningInfo(undefined);
       setPlayer(Player.NO);
     }
   };
 
   const handleCellClick = (row: number, column: number) => {
+    if (winningInfo !== undefined) return;
     if (player === Player.NO) {
       handleStartGame();
       return;
     }
 
-    if (gameState[row][column] !== Player.NO) return;
+    if (board[row][column] !== Player.NO) return;
 
-    const newGameState = [...gameState];
-    newGameState[row][column] = player === Player.X ? Player.X : Player.O;
-    setGameState(newGameState);
+    const newboard = [...board];
+    newboard[row][column] = player === Player.X ? Player.X : Player.O;
+    setBoard(newboard);
 
-    if (checkForVictory(row, column, gameState, player)) {
-      setWinnerState(checkForVictory(row, column, gameState, player));
+    if (checkForVictory(row, column, board, player)) {
+      setWinningInfo(checkForVictory(row, column, board, player));
     } else {
       setPlayer(player === Player.X ? Player.O : Player.X);
     }
@@ -68,12 +67,16 @@ export const Game = () => {
         </div>
 
         <Board
-          winnerArray={winnerArray}
-          gameState={gameState}
+          winningInfo={winningInfo}
+          board={board}
           onCellClick={handleCellClick}
         />
         <Button onClick={handleStartGame}>
-          {player === Player.NO ? "Play" : "Reset"}
+          {player === Player.NO
+            ? "Play"
+            : winningInfo === undefined
+            ? "Reset"
+            : "Play again"}
         </Button>
       </Layout>
     </Background>

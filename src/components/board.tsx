@@ -7,8 +7,8 @@ import { Player } from "../shared/variables";
 import { PlayerType, WinnerType } from "../shared/types";
 
 interface BoardProps {
-  gameState: PlayerType[][];
-  winnerArray: WinnerType;
+  board: PlayerType[][];
+  winningInfo: WinnerType;
   onCellClick: (row: number, column: number) => void;
 }
 
@@ -19,11 +19,11 @@ const Wrapper = styled.div`
   gap: 10px;
 `;
 
-export const Board = ({ gameState, winnerArray, onCellClick }: BoardProps) => {
+export const Board = ({ board, winningInfo, onCellClick }: BoardProps) => {
   let winCellNumber = 0;
   return (
     <Wrapper>
-      {gameState.map((row, i) => {
+      {board.map((row, i) => {
         return row.map((cell, j) => {
           let content = <div />;
 
@@ -32,8 +32,8 @@ export const Board = ({ gameState, winnerArray, onCellClick }: BoardProps) => {
           }
 
           const winningCell =
-            winnerArray &&
-            isWinningCell(winnerArray.direction, winnerArray.where, i, j);
+            winningInfo &&
+            isWinningCell(winningInfo.direction, winningInfo.where, i, j);
 
           winCellNumber = winningCell ? winCellNumber + 1 : winCellNumber;
 
@@ -46,7 +46,7 @@ export const Board = ({ gameState, winnerArray, onCellClick }: BoardProps) => {
             >
               {content}
               {winningCell && (
-                <Win number={winCellNumber} direction={winnerArray.direction} />
+                <Win number={winCellNumber} direction={winningInfo.direction} />
               )}
             </Cell>
           );
