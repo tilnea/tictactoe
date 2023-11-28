@@ -74,11 +74,15 @@ const WinText = styled.div<WinTextprops>`
 `;
 
 export const Win = ({ number, direction }: WinProps) => {
+  let letter = "";
+  if (direction === Direction.ANTI_DIAGONAL) {
+    letter = number === 1 ? "N" : number === 2 ? "I" : "W";
+  } else {
+    letter = number === 1 ? "W" : number === 2 ? "I" : "N";
+  }
   return (
     <WinCell>
-      <WinText $direction={direction}>
-        {number === 1 ? "W" : number === 2 ? "I" : "N"}
-      </WinText>
+      <WinText $direction={direction}>{letter}</WinText>
     </WinCell>
   );
 };
