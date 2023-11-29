@@ -31,13 +31,11 @@ export const checkForVictory = (
   //check row
   if (player === Player.NO) return undefined;
   if (isSame(gameStatus[currentRow], player))
-    //return { row: currentRow, column: 0 };
     return { direction: Direction.ROW, where: currentRow };
 
   //check column
   const columnArray = getColumn(gameStatus, currentColumn);
   if (isSame(columnArray, player))
-    //return { row: 0, column: currentColumn };
     return { direction: Direction.COLUMN, where: currentColumn };
 
   //check diagonal
