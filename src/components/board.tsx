@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import { useState, useEffect } from "react";
 import { Cell } from "./cell";
 import { Icon } from "./icon";
 import { Win } from "./win";
@@ -6,11 +7,13 @@ import { isWinningCell } from "../shared/utils";
 import { Player } from "../shared/variables";
 import { PlayerType, WinnerType } from "../shared/types";
 import { Tie } from "./tie";
+import { TicTacToe } from "./tic-tac-toe";
 
 interface BoardProps {
   board: PlayerType[][];
   winningInfo: WinnerType;
   itsATie: boolean;
+  showTicTacToe: boolean;
   onCellClick: (row: number, column: number) => void;
 }
 
@@ -23,7 +26,7 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-const TieWrapper = styled.div`
+const AnimationWrapper = styled.div`
   position: absolute;
 `;
 
@@ -31,9 +34,11 @@ export const Board = ({
   board,
   winningInfo,
   itsATie,
+  showTicTacToe,
   onCellClick,
 }: BoardProps) => {
   let winCellNumber = 0;
+
   return (
     <Wrapper>
       {board.map((row, i) => {
@@ -66,9 +71,14 @@ export const Board = ({
         });
       })}
       {itsATie && (
-        <TieWrapper>
+        <AnimationWrapper>
           <Tie />
-        </TieWrapper>
+        </AnimationWrapper>
+      )}
+      {showTicTacToe && (
+        <AnimationWrapper>
+          <TicTacToe />
+        </AnimationWrapper>
       )}
     </Wrapper>
   );

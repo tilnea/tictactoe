@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { Background } from "../components/background";
 import { Board } from "../components/board";
@@ -47,28 +47,38 @@ export const Game = () => {
   const [winningInfo, setWinningInfo] = useState<WinnerType>(undefined);
   const [score, setScore] = useState({ x: 0, o: 0, tie: 0 });
   const [turn, setTurn] = useState(1);
+  const [restartGame, setRestartGame] = useState(false);
+
+  useEffect(() => {
+    if (restartGame) {
+      const timer = setTimeout(() => {
+        setRestartGame(false);
+        setGameStatus(GameStatus.PLAY);
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [restartGame]);
 
   const handleStartGame = () => {
     if (gameStatus === GameStatus.START) {
       setPlayer(Player.X);
+      setGameStatus(GameStatus.PLAY);
     } else if (gameStatus === GameStatus.PLAY) {
       setBoard(EMPTY_STATE);
       setTurn(1);
+      setRestartGame(true);
     } else if (gameStatus === GameStatus.FINISH) {
       setBoard(EMPTY_STATE);
       setTurn(1);
       setWinningInfo(undefined);
       setPlayer(player === Player.X ? Player.O : Player.X);
+      setRestartGame(true);
     }
-
     setGameStatus(GameStatus.PLAY);
   };
 
   const handleCellClick = (row: number, column: number) => {
-    if (player === Player.NO) {
-      handleStartGame();
-      return;
-    }
+    if (player === Player.NO) return;
     if (gameStatus === GameStatus.FINISH) return;
     if (board[row][column] !== Player.NO) return;
 
@@ -122,6 +132,7 @@ export const Game = () => {
             board={board}
             onCellClick={handleCellClick}
             itsATie={!winningInfo && gameStatus === GameStatus.FINISH}
+            showTicTacToe={restartGame || gameStatus === GameStatus.START}
           />
           <Button onClick={handleStartGame}>
             {gameStatus === GameStatus.START && "Play"}
