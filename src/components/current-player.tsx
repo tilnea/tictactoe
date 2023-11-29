@@ -15,6 +15,7 @@ const Wrapper = styled.div`
 const IconWrapper = styled.div`
   position: absolute;
   top: 0;
+  bottom: 0;
   transition: 1s opacity;
   opacity: 1;
 
