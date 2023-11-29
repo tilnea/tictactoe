@@ -61,13 +61,16 @@ export const Game = () => {
 
   const handleStartGame = () => {
     if (gameStatus === GameStatus.START) {
+      // first time game is started
       setPlayer(Player.X);
       setGameStatus(GameStatus.PLAY);
     } else if (gameStatus === GameStatus.PLAY) {
+      // reseting game
       setBoard(EMPTY_STATE);
       setTurn(1);
       setRestartGame(true);
     } else if (gameStatus === GameStatus.FINISH) {
+      // playing game again
       setBoard(EMPTY_STATE);
       setTurn(1);
       setWinningInfo(undefined);
