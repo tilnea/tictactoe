@@ -15,73 +15,60 @@ const opacity = keyframes`
   }
 `;
 
-const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 86px);
-  grid-template-rows: repeat(3, 86px);
-  gap: 10px;
+const UnClickedCell = styled(Cell)`
   font-size: 64px;
   color: #000;
+  opacity: 0;
+  animation: ${opacity} 0.9s ease-in-out 1;
 
-  > ${Cell} {
-    opacity: 0;
-    animation-direction: alternate;
-  }
-
-  ${Cell}:nth-child(1) {
+  &:nth-child(1) {
     font-family: Barriecito;
     animation: ${opacity} 2.2s ease-in-out 1;
   }
 
-  ${Cell}:nth-child(4) {
+  &:nth-child(4) {
     font-family: Courgette;
-    animation: ${opacity} 0.9s ease-in-out 1;
     animation-delay: 0.2s;
   }
 
-  ${Cell}:nth-child(7) {
+  &:nth-child(7) {
     font-family: DancingScript;
-    animation: ${opacity} 0.9s ease-in-out 1;
     animation-delay: 0.4s;
   }
 
-  ${Cell}:nth-child(2) {
+  &:nth-child(2) {
     font-family: DancingScript;
-    animation: ${opacity} 0.9s ease-in-out 1;
     animation-delay: 0.6s;
   }
 
-  ${Cell}:nth-child(3) {
+  &:nth-child(3) {
     font-family: DancingScript;
-    animation: ${opacity} 0.9s ease-in-out 1;
     animation-delay: 0.8s;
   }
 
-  ${Cell}:nth-child(5) {
+  &:nth-child(5) {
     font-family: Barriecito;
-    animation: ${opacity} 0.9s ease-in-out 1;
     animation-delay: 1s;
   }
 
-  ${Cell}:nth-child(9) {
+  &:nth-child(9) {
     font-family: Barriecito;
-    animation: ${opacity} 0.9s ease-in-out 1;
     animation-delay: 1.2s;
   }
 `;
 
 export const Tie = () => {
   return (
-    <Wrapper>
-      <Cell>T</Cell>
-      <Cell>i</Cell>
-      <Cell>e</Cell>
-      <Cell>i</Cell>
-      <Cell>i</Cell>
-      <Cell></Cell>
-      <Cell>e</Cell>
-      <Cell></Cell>
-      <Cell>e</Cell>
-    </Wrapper>
+    <>
+      <UnClickedCell>T</UnClickedCell>
+      <UnClickedCell>i</UnClickedCell>
+      <UnClickedCell>e</UnClickedCell>
+      <UnClickedCell>i</UnClickedCell>
+      <UnClickedCell>i</UnClickedCell>
+      <UnClickedCell></UnClickedCell>
+      <UnClickedCell>e</UnClickedCell>
+      <UnClickedCell></UnClickedCell>
+      <UnClickedCell>e</UnClickedCell>
+    </>
   );
 };

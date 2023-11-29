@@ -1,5 +1,4 @@
 import { styled } from "styled-components";
-import { useState, useEffect } from "react";
 import { Cell } from "./cell";
 import { Icon } from "./icon";
 import { Win } from "./win";
@@ -17,7 +16,7 @@ interface BoardProps {
   onCellClick: (row: number, column: number) => void;
 }
 
-const Wrapper = styled.div`
+const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 86px);
   grid-template-rows: repeat(3, 86px);
@@ -26,7 +25,7 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-const AnimationWrapper = styled.div`
+const AbsoluteWrapper = styled.div`
   position: absolute;
 `;
 
@@ -40,7 +39,7 @@ export const Board = ({
   let winCellNumber = 0;
 
   return (
-    <Wrapper>
+    <Grid>
       {board.map((row, i) => {
         return row.map((cell, j) => {
           let content = <div />;
@@ -71,15 +70,19 @@ export const Board = ({
         });
       })}
       {itsATie && (
-        <AnimationWrapper>
-          <Tie />
-        </AnimationWrapper>
+        <AbsoluteWrapper>
+          <Grid>
+            <Tie />
+          </Grid>
+        </AbsoluteWrapper>
       )}
       {showTicTacToe && (
-        <AnimationWrapper>
-          <TicTacToe />
-        </AnimationWrapper>
+        <AbsoluteWrapper>
+          <Grid>
+            <TicTacToe />
+          </Grid>
+        </AbsoluteWrapper>
       )}
-    </Wrapper>
+    </Grid>
   );
 };
