@@ -1,3 +1,37 @@
+# Run program
+
+- pnpm install
+- pnpm run dev
+
+# Run tests
+
+- pnpm test
+
+# What I have done
+
+I created a fun, pretty and colorful Tic Tac Toe game.
+I used styled-components to scope my styles, I usually use css-modules but though it would be fun to try styled-components for this project.
+I put all my re-usable components in a component folder.
+I put my layout in a layout folder (this component is npt reusable)
+I have a SVG sprite for my svgs.
+I put my calculations in a utils file. In a bigger project it would rather be a utils folder with several files with different util functions, but for thois project I decided to keep them all in one file.
+
+# I got stuck on
+
+Because the project was named Interview%20Test/Interview Test I got problems trying to run the tests and this took me to much time (hours) to figure out. the %20 was read as " " sometimes and "%20" at other times. So when I finally figured that out and renamed the project the tests worked fine.
+
+I also spent to much time on trying to make a animating SVG background. I never done this before and I really wanted the X and Os to animate on change of player, instead of just changing like today. I would also like to use the svgs from the sprite-sheet as background images.
+
+# What I would like to do more (if I did not get stuck with the test-problem above)
+
+I would like to hanle tie better, do a better check and write tests for it.
+I would like to tweek animations more - but it's a never ending project I realized.
+There are two jumps when clicking Play and the first cell the first time the user play the game (and maybe on some other places aswell). Its annyong and something I would like to fix. If I remove the Background component wrapping everyting it goes away. But I did not have time to investogate more at the moment.
+
+I figured its better to send you my solution now instead of taking more time.
+
+# Assigment
+
 ![Inserting image...](tictactoe.png)
 
 The final goal of this take-home assessment is having a functional Tic-tac-toe game. The game should be playable by 2 players on the same computer and we recommend that you don’t spend more than a couple of hours on it. The requisites are the following:
