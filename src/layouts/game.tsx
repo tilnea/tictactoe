@@ -80,18 +80,32 @@ export const Game = () => {
     setGameStatus(GameStatus.PLAY);
   };
 
-  const handleCellClick = (row: number, column: number) => {
+  const handleCellClick = (currentRow: number, currentColumn: number) => {
     if (player === Player.NO) return;
     if (gameStatus === GameStatus.FINISH) return;
-    if (board[row][column] !== Player.NO) return;
+    if (board[currentRow][currentColumn] !== Player.NO) return;
 
     setTurn(turn + 1);
 
-    const newboard = [...board];
-    newboard[row][column] = player === Player.X ? Player.X : Player.O;
-    setBoard(newboard);
+    /*
+      Before I was mutatating the state  of a cell directly (I was 
+      mutating an excisting item), which is a big no-no in React since 
+      it will not trigger a re-render.
+    */
+    const newBoard = board.map((row, i) => {
+      return row.map((cell, j) => {
+        return i === currentRow && j === currentColumn ? player : cell;
+      });
+    });
 
-    const victoryInfo = checkForVictory(row, column, board, player);
+    setBoard(newBoard);
+
+    const victoryInfo = checkForVictory(
+      currentRow,
+      currentColumn,
+      newBoard,
+      player
+    );
     if (victoryInfo) {
       setWinningInfo(victoryInfo);
       setGameStatus(GameStatus.FINISH);

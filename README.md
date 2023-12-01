@@ -12,7 +12,7 @@
 I created a fun, pretty and colorful Tic Tac Toe game.
 I used styled-components to scope my styles, I usually use css-modules but though it would be fun to try styled-components for this project.
 I put all my re-usable components in a component folder.
-I put my layout in a layout folder (this component is npt reusable)
+I put my layout in a layout folder (this component is not reusable)
 I have a SVG sprite for my svgs.
 I put my calculations in a utils file. In a bigger project it would rather be a utils folder with several files with different util functions, but for thois project I decided to keep them all in one file.
 
@@ -24,7 +24,7 @@ I also spent to much time on trying to make a animating SVG background. I never 
 
 # What I would like to do more (if I did not get stuck with the test-problem above)
 
-I would like to hanle tie better, do a better check and write tests for it.
+I would like to handle tie better, do a better check and write tests for it.
 I would like to tweek animations more - but it's a never ending project I realized.
 There are two jumps when clicking Play and the first cell the first time the user play the game (and maybe on some other places aswell). Its annyong and something I would like to fix. If I remove the Background component wrapping everyting it goes away. But I did not have time to investogate more at the moment.
 
