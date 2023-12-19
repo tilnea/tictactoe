@@ -87,11 +87,6 @@ export const Game = () => {
 
     setTurn(turn + 1);
 
-    /*
-      Before I was mutatating the state  of a cell directly (I was 
-      mutating an excisting item), which is a big no-no in React since 
-      it will not trigger a re-render.
-    */
     const newBoard = board.map((row, i) => {
       return row.map((cell, j) => {
         return i === currentRow && j === currentColumn ? player : cell;
